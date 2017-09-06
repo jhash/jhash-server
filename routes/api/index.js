@@ -1,5 +1,5 @@
 var express = require('express');
-var apiApp = express();
+var apiApp = express({ mergeParams: true });
 
 var messageWorkTogether = require('./message_work_together');
 
