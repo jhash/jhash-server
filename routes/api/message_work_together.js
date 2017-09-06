@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 
 var AWS = require('aws-sdk');
+// TODO: move this somewhere?
+AWS.config.update({ region: 'us-east-1' });
 
 var sourceEmail = process.env.JAKE_HASH_SOURCE_EMAIL;
 
@@ -61,9 +63,6 @@ router.post('/', function(req, res, next) {
       // },
     ]
   };
-
-  // TODO: move this somewhere?
-  AWS.config.update({ region: 'us-east-1' });
 
   ses.sendEmail(emailParams, function(err, data) {
     if (err) throw err;
