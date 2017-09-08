@@ -6,6 +6,7 @@ var AWS = require('aws-sdk');
 AWS.config.update({ region: 'us-east-1' });
 
 var sourceEmail = process.env.JAKE_HASH_SOURCE_EMAIL;
+var toEmail = process.env.JAKE_HASH_TO_EMAIL;
 
 /* POST a work together message. */
 router.post('/', function(req, res, next) {
@@ -17,15 +18,12 @@ router.post('/', function(req, res, next) {
     Destination: { /* required */
       BccAddresses: [
         // 'STRING_VALUE',
-        /* more items */
       ],
       CcAddresses: [
         // 'STRING_VALUE',
-        /* more items */
       ],
       ToAddresses: [
-        sourceEmail
-        /* more items */
+        toEmail
       ]
     },
     Message: { /* required */
@@ -40,7 +38,12 @@ router.post('/', function(req, res, next) {
         }
       },
       Subject: { /* required */
-        Data: 'Message from ' + req.body.name + ' [JakeHash:Message:WorkTogether' + (process.env.NODE_ENV === 'development' ? ':Development]' : ']') /* required */
+        Data: 'Message from ' + req.body.name +
+          ' [JakeHash:Message:WorkTogether' +
+          (process.env.NODE_ENV === 'development'
+            ? ':Development]'
+            : ']'
+          ) /* required */
         // Charset: 'STRING_VALUE'
       }
     },
