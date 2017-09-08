@@ -9,10 +9,6 @@ var sourceEmail = process.env.JAKE_HASH_SOURCE_EMAIL;
 
 /* POST a work together message. */
 router.post('/', function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'POST');
-  // res.header('Access-Control-Allow-Headers', 'Content-Type');
-
   // TODO: validate name, email, and message
 
   var ses = new AWS.SES();
@@ -44,7 +40,7 @@ router.post('/', function(req, res, next) {
         }
       },
       Subject: { /* required */
-        Data: 'Message from ' + req.body.name + ' [JakeHash:Message:WorkTogether]' /* required */
+        Data: 'Message from ' + req.body.name + ' [JakeHash:Message:WorkTogether' + (process.env.NODE_ENV === 'development' ? ':Development]' : ']') /* required */
         // Charset: 'STRING_VALUE'
       }
     },

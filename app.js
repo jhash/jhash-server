@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 
 var indexRoute = require('./routes/index');
 var users = require('./routes/users');
-var apiIndexRoute = require('./routes/api/index');
+var apiIndexApp = require('./routes/api/index');
 
 var app = express();
 
@@ -16,7 +16,18 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.options('*', cors());
+var whitelist = ['http://jakehash.com']
+app.use('*', cors({
+  origin: function(origin, callback) {
+    if (process.env.NODE_ENV === 'development') callback(null, true);
+    else if (whitelist.indexOf(origin) !== -1) callback(null, true);
+    else {
+      var corsError = new Error('Unauthorized origin ' + (origin || ''));
+      corsError.status = 401;
+      callback(corsError);
+    }
+  }
+}));
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -28,7 +39,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRoute);
 app.use('/users', users);
-app.use('/api', apiIndexRoute);
+app.use('/api', apiIndexApp);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
