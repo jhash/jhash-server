@@ -1,13 +1,13 @@
 var express = require('express');
-var apiApp = express({ mergeParams: true });
+var router = express.Router();
 
 var messageWorkTogether = require('./message_work_together');
 
 /* GET api index page. */
-apiApp.get('/', function(req, res, next) {
+router.get('/', function(req, res, next) {
   res.render('api_docs');
 });
 
-apiApp.use('/message_work_together', messageWorkTogether);
+router.use('/message_work_together', messageWorkTogether);
 
-module.exports = apiApp;
+module.exports = router;
